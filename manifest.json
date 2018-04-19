@@ -17,7 +17,7 @@
     },
     "manifest_version": 2,
     "name": "Enlighten",
-    "description": "灯塔在线-答题辅助",
+    "description": "dtdjzx-quiz helper",
     "permissions": ["tabs"],
     "version": "0.0.1"
 }
