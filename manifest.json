@@ -1,0 +1,23 @@
+{
+    "background": {
+        "page": "background.html",
+        "persistent": true
+    },
+    "browser_action": {
+        "default_icon": "images/icon.png"
+    },
+    "content_scripts": [{
+        "all_frames": true,
+        "js": ["jquery.min.js", "content.js"],
+        "run_at": "document_end",
+        "matches": ["*://xxjs.dtdjzx.gov.cn/monidati.html", "*://xxjs.dtdjzx.gov.cn/kaishijingsai.html"]
+    }],
+    "icons": {
+        "128": "images/icon.png"
+    },
+    "manifest_version": 2,
+    "name": "Enlighten",
+    "description": "灯塔在线-答题辅助",
+    "permissions": ["tabs"],
+    "version": "0.0.1"
+}
