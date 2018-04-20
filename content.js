@@ -1,65 +1,60 @@
 var enlightenContext = {
 	enableTab: function () {
 		let answers = [];
-		let answerIndex = 0;
-
-		let questionindex = 0;
-		let questionLi = $(".w_charu li");
-		let length = questionLi.length;
-		// display message
-		$(".W_fl").append("<span id='divMsg' style='position:  absolute;margin-left: 180px;display: none;' >");
-		let msgDiv = $("#divMsg");
-		msgDiv.text("带有绿色边框的是正确选项！");
-		msgDiv.css({
-			"color": "#0ef"
-		});
-		msgDiv.fadeIn();
 		// get answer
 		$.ajax({
-			type: 'POST',
-			url: 'http://xxjs.dtdjzx.gov.cn/quiz-api/game_info/lookBackSubject',
+			type: "POST",
+			url: "http://xxjs.dtdjzx.gov.cn/quiz-api/game_info/lookBackSubject",
 			data: {
 				roundOnlyId: JSON.parse(localStorage.w_allHuiKan2).data.roundOnlyId
 			},
 			dataType: "json",
 			success: function (res) {
 				let data = res.data.dateList;
-				var str = '';
+				var str = "";
 				if (res.code == 200 && data.length > 0) {
 					for (var i = 0; i < data.length; i++) {
 						answers.push(data[i].answer);
 					}
-					showAns();
+					showAnswer();
 				} else {
-					console.log(`roundOnlyId错误！`);
+					console.log("答案获取失败！");
 				}
 			}
 		})
+		// display message
+		this.showMessage();
 		// display correct answer
-		function showAns() {
-			if (questionindex < length) {
-				// console.log(questionindex);
-				var e = questionLi[questionindex++];
-				getAns(e);
-			}
-		}
-
-		function getAns(e) {
-			let thisAnswer = answers[answerIndex++];
-			// console.log(thisAnswer.toString());
-			let ans = thisAnswer.split(',');
-			ans.forEach(a => {
-				$(e).find("input[value=" + a + "]").parent().css("border", "2px solid green");
-			});
-			showAns();
+		function showAnswer() {
+			$(".w_charu li").each(function (i) {
+				answers[i].split(',').forEach(a => {
+					$(this).find("input[value=" + a + "]").parent().css("background-color", "lightgreen");
+				})
+			})
 		}
 
 	},
+
 	disableTab: function () {
-		let questionLi = $(".w_charu li");
-		questionLi.find('label').css('border', '');
-		let msgDiv = $("#divMsg");
-		msgDiv.remove();
+		$(".w_charu li").find('label').css('background-color', '');
+		this.hideMessage();
+	},
+
+	showMessage: function () {
+		$(".W_fl").append("<span id='enlightenMsg'>");
+		let msgSpan = $("#enlightenMsg");
+		msgSpan.text("绿色为正确选项！");
+		msgSpan.css({
+			"color": "#0ef",
+			"position": "absolute",
+			"margin-left": "180px",
+			"display": "none"
+		});
+		msgSpan.fadeIn();
+	},
+
+	hideMessage: function () {
+		$("#enlightenMsg").remove();
 	}
 }
 //Event Listeners
